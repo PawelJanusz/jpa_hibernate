@@ -14,7 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
-@ComponentScan(basePackages = {"configuration"})
+@ComponentScan(basePackages = {"configuration", "service"})
 public class SpringConfig {
 
     @Bean

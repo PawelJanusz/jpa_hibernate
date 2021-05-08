@@ -1,16 +1,27 @@
 package entity.jpa;
 
-import javax.persistence.Embedded;
+import javax.persistence.*;
 
+@Entity
 public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
     private String surname;
 
     @Embedded
     private Address address;
 
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name = "street", column = @Column(name = "billing_street")),
+            @AttributeOverride(name = "city", column = @Column(name = "billing_city")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "billing_zip_code"))
+
+    })
     private Address billingAddress;
 
     public Long getId() {

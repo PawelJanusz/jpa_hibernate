@@ -1,8 +1,14 @@
 package entity.jpa;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public abstract class Device {
 
+    @Column(name = "device_name")
     private String deviceName;
+
     private String localization;
 
     public Device() {

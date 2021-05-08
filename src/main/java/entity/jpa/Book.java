@@ -1,10 +1,20 @@
 package entity.jpa;
 
+import javax.persistence.*;
+
+@Entity
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Author author;
+
     private String title;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Student student;
 
     public Book() {

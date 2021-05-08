@@ -2,12 +2,16 @@ package service;
 
 import configuration.JpaConfig;
 import entity.jpa.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -145,5 +149,47 @@ public class JpaService {
         return Arrays.asList(student, student2, student3);
     }
 
+    public List<Book> getBooksTakenByStudentsFromLocationNQ(String location) {
+        String myQuery = "select b.* from book b\n" +
+                "join student s on b.student_id=s.id\n" +
+                "join computer_student cs on s.id=cs.student_id\n" +
+                "join computer co on cs.computer_id = co.id\n" +
+                "where co.localization = ?1";
+        Query query = entityManager.createNativeQuery(myQuery, Book.class);
+        query.setParameter(1,location);
+        return query.getResultList();
+    }
+    public List<Book> getBooksTakenByStudentsFromLocationJpql(String location){
+        TypedQuery<Book> query = entityManager.createQuery(
+                "SELECT b FROM Book b JOIN b.student s JOIN s.computers c WHERE c.localization = :localization", Book.class);
+        query.setParameter("localization", location);
+        return query.getResultList();
+    }
 
+    public List<BookInfo> getBooksInfoProjectionWithJpql(String location){
+        TypedQuery<BookInfo> query = entityManager.createQuery(
+                "SELECT new entity.jpa.BookInfo(b.title, s.name, s.surname) FROM Book b JOIN b.student s JOIN s.computers c WHERE c.localization = :localization",
+                BookInfo.class
+        );
+        query.setParameter("localization", location);
+        return query.getResultList();
+    }
+
+    public List<BookInfo> getBookInfoProjectionWithCriteriaApi(String location){
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<BookInfo> query = cb.createQuery(BookInfo.class);
+        Root<Book> bookRoot = query.from(Book.class);
+
+        Join<Book, Student> students = bookRoot.join("student");
+        Join<Student, Computer> computers = bookRoot.join("computers");
+
+        query.select(cb.construct(BookInfo.class,
+                bookRoot.get("title"),
+                students.get("name"),
+                students.get("surname")));
+
+        query.where(cb.equal(computers.get("localization"), location));
+
+        return entityManager.createQuery(query).getResultList();
+    }
 }

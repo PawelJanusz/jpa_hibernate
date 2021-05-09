@@ -1,4 +1,4 @@
-package configuration;
+package configuration.jpa;
 
 import org.springframework.stereotype.Component;
 

@@ -17,9 +17,9 @@ public class Main {
 //
 //        Person person = new Person();
 //        jpaService.savePersonInDb();
-//        jpaService.prepareStudentData();
+        jpaService.prepareStudentData();
 
-        List<BookInfo> books = jpaService.getBookInfoProjectionWithCriteriaApi("Krakow");
+        List<Book> books = jpaService.getBooksTakenByStudentsFromLocationJpql("Krakow");
         System.out.println(books);
     }
 }

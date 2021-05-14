@@ -39,7 +39,7 @@ public class HibernateConfig {
         Properties prop = new Properties();
 
         try {
-            prop.load(HibernateConfig.class.getClass().getResourceAsStream("/hibernate.properties"));
+            prop.load(HibernateConfig.class.getResourceAsStream("/hibernate.properties"));
             return prop;
         }catch (IOException ex){
             ex.printStackTrace();

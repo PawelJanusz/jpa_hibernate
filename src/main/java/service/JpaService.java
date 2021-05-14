@@ -2,6 +2,7 @@ package service;
 
 import configuration.jpa.JpaConfig;
 import entity.jpa.*;
+import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;

@@ -4,6 +4,7 @@ import entity.jpa.BookInfo;
 import entity.jpa.Person;
 import entity.jpa.Student;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import service.HibernateService;
 import service.JpaService;
 
 import java.util.List;
@@ -13,13 +14,16 @@ public class Main {
     public static void main(String[] args) {
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
         JpaService jpaService = context.getBean(JpaService.class);
+        HibernateService hibernateService = context.getBean(HibernateService.class);
 //        jpaService.test();
 //
 //        Person person = new Person();
 //        jpaService.savePersonInDb();
-        jpaService.prepareStudentData();
+//        jpaService.prepareStudentData();
+//
+//        List<Book> books = jpaService.getBooksTakenByStudentsFromLocationJpql("Krakow");
+//        System.out.println(books);
 
-        List<Book> books = jpaService.getBooksTakenByStudentsFromLocationJpql("Krakow");
-        System.out.println(books);
+            hibernateService.testCache();
     }
 }
